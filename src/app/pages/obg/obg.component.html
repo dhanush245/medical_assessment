@@ -1,0 +1,132 @@
+<div class="component-wrapper">
+    <div class="bg-particles"></div>
+    <h2 class="gradient-text title-entrance">🤱 OB/GYN Assessment</h2>
+    <p>Welcome to the OB/GYN Assessment module. Enter patient details below to begin the obstetric and gynecological evaluation.</p>
+
+    <form *ngIf="showForm" (ngSubmit)="onSubmit()" #obgForm="ngForm" class="card-animation neon-border">
+        <div class="form-group">
+            <label for="name">Patient Name</label>
+            <input 
+                type="text" 
+                id="name"
+                name="name" 
+                [(ngModel)]="formData.name" 
+                required 
+                placeholder="Enter patient's full name"
+                class="interactive"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input 
+                type="number" 
+                id="age"
+                name="age" 
+                [(ngModel)]="formData.age" 
+                required 
+                placeholder="Enter patient's age"
+                min="0"
+                max="120"
+                class="interactive"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="lastMenstrualPeriod">Last Menstrual Period</label>
+            <input 
+                type="date" 
+                id="lastMenstrualPeriod"
+                name="lastMenstrualPeriod" 
+                [(ngModel)]="formData.lastMenstrualPeriod"
+                class="interactive"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="pregnancyStatus">Pregnancy Status</label>
+            <select 
+                id="pregnancyStatus"
+                name="pregnancyStatus" 
+                [(ngModel)]="formData.pregnancyStatus"
+                class="interactive"
+            >
+                <option value="">Select Status</option>
+                <option value="Not Pregnant">Not Pregnant</option>
+                <option value="Pregnant - First Trimester">Pregnant - First Trimester</option>
+                <option value="Pregnant - Second Trimester">Pregnant - Second Trimester</option>
+                <option value="Pregnant - Third Trimester">Pregnant - Third Trimester</option>
+                <option value="Postpartum">Postpartum</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="gynecologicalHistory">Gynecological History</label>
+            <textarea 
+                id="gynecologicalHistory"
+                name="gynecologicalHistory" 
+                [(ngModel)]="formData.gynecologicalHistory"
+                placeholder="Record gynecological history and concerns"
+                class="interactive"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="obstetricHistory">Obstetric History</label>
+            <textarea 
+                id="obstetricHistory"
+                name="obstetricHistory" 
+                [(ngModel)]="formData.obstetricHistory"
+                placeholder="Document obstetric history and previous pregnancies"
+                class="interactive"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="examinationFindings">Examination Findings</label>
+            <textarea 
+                id="examinationFindings"
+                name="examinationFindings" 
+                [(ngModel)]="formData.examinationFindings"
+                placeholder="Record physical examination findings"
+                class="interactive"
+            ></textarea>
+        </div>
+
+        <button type="submit" class="interactive">
+            <span *ngIf="!isLoading">💾 Save Assessment</span>
+            <span *ngIf="isLoading" class="loading"></span>
+            <span *ngIf="isLoading">Saving...</span>
+        </button>
+    </form>
+
+    <button class="create-btn interactive" (click)="onCreate()" title="Create New Assessment">
+        <span *ngIf="!showForm">+</span>
+        <span *ngIf="showForm">✕</span>
+    </button>
+
+    <!-- Success Message -->
+    <div *ngIf="showSuccess" class="success-message" (click)="hideSuccess()">
+        <div>✅</div>
+        <div>Assessment saved successfully!</div>
+    </div>
+
+    <!-- Saved Summary -->
+    <div *ngIf="lastSaved && !showForm" class="card-animation" style="max-width: 800px; margin: 1.5rem auto; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 16px; box-shadow: var(--shadow-lg); overflow: hidden;">
+        <div style="padding: 1rem; background: linear-gradient(135deg, #ec4899, #db2777); color: #fff; font-weight: 700;">Saved Assessment Summary</div>
+        <div style="padding: 1.25rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div><strong>Name:</strong> {{ lastSaved.name || '-' }}</div>
+                <div><strong>Age:</strong> {{ lastSaved.age || '-' }}</div>
+                <div><strong>Pregnancy Status:</strong> {{ lastSaved.pregnancyStatus || '-' }}</div>
+                <div><strong>LMP:</strong> {{ lastSaved.lastMenstrualPeriod || '-' }}</div>
+                <div style="grid-column: 1 / -1;"><strong>Gynecological History:</strong> {{ lastSaved.gynecologicalHistory || '-' }}</div>
+                <div style="grid-column: 1 / -1;"><strong>Obstetric History:</strong> {{ lastSaved.obstetricHistory || '-' }}</div>
+                <div style="grid-column: 1 / -1;"><strong>Examination Findings:</strong> {{ lastSaved.examinationFindings || '-' }}</div>
+            </div>
+            <div style="margin-top: 0.75rem; color: var(--text-secondary); font-size: 0.9rem;">
+                Saved at: {{ lastSaved.savedAt | date:'medium' }}
+            </div>
+        </div>
+    </div>
+</div>

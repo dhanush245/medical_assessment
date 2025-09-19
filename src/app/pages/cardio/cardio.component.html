@@ -1,0 +1,134 @@
+<div class="component-wrapper">
+    <div class="bg-particles"></div>
+    <h2 class="gradient-text title-entrance">🫀 Cardio Assessment</h2>
+    <p>Welcome to the Cardio Assessment module. Enter patient details below to begin the cardiovascular evaluation.</p>
+
+    <form *ngIf="showForm" (ngSubmit)="onSubmit()" #cardioForm="ngForm" class="card-animation neon-border">
+        <div class="form-group">
+            <label for="name">Patient Name</label>
+            <input 
+                type="text" 
+                id="name"
+                name="name" 
+                [(ngModel)]="formData.name" 
+                required 
+                placeholder="Enter patient's full name"
+                class="interactive"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input 
+                type="number" 
+                id="age"
+                name="age" 
+                [(ngModel)]="formData.age" 
+                required 
+                placeholder="Enter patient's age"
+                min="0"
+                max="120"
+                class="interactive"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select 
+                id="gender"
+                name="gender" 
+                [(ngModel)]="formData.gender" 
+                required
+                class="interactive"
+            >
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address</label>
+            <textarea 
+                id="address"
+                name="address" 
+                [(ngModel)]="formData.address" 
+                required
+                placeholder="Enter patient's complete address"
+                class="interactive"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="uid">Patient UID</label>
+            <input 
+                type="number" 
+                id="uid"
+                name="uid" 
+                [(ngModel)]="formData.uid" 
+                required 
+                placeholder="Enter unique patient identifier"
+                class="interactive"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="complaints">Chief Complaints</label>
+            <textarea 
+                id="complaints"
+                name="complaints" 
+                [(ngModel)]="formData.complaints"
+                placeholder="Describe the main symptoms or complaints"
+                class="interactive"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="history">History of Presenting Illness</label>
+            <textarea 
+                id="history"
+                name="history" 
+                [(ngModel)]="formData.history"
+                placeholder="Provide detailed history of the current illness"
+                class="interactive"
+            ></textarea>
+        </div>
+
+        <button type="submit" class="interactive">
+            <span *ngIf="!isLoading">💾 Save Assessment</span>
+            <span *ngIf="isLoading" class="loading"></span>
+            <span *ngIf="isLoading">Saving...</span>
+        </button>
+    </form>
+
+    <button class="create-btn interactive" (click)="onCreate()" title="Create New Assessment">
+        <span *ngIf="!showForm">+</span>
+        <span *ngIf="showForm">✕</span>
+    </button>
+
+    <!-- Success Message -->
+    <div *ngIf="showSuccess" class="success-message" (click)="hideSuccess()">
+        <div>✅</div>
+        <div>Assessment saved successfully!</div>
+    </div>
+
+    <!-- Saved Summary -->
+    <div *ngIf="lastSaved && !showForm" class="card-animation" style="max-width: 800px; margin: 1.5rem auto; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 16px; box-shadow: var(--shadow-lg); overflow: hidden;">
+        <div style="padding: 1rem; background: var(--gradient-primary); color: #fff; font-weight: 700;">Saved Assessment Summary</div>
+        <div style="padding: 1.25rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div><strong>Name:</strong> {{ lastSaved.name || '-' }}</div>
+                <div><strong>Age:</strong> {{ lastSaved.age || '-' }}</div>
+                <div><strong>Gender:</strong> {{ lastSaved.gender || '-' }}</div>
+                <div><strong>UID:</strong> {{ lastSaved.uid || '-' }}</div>
+                <div style="grid-column: 1 / -1;"><strong>Address:</strong> {{ lastSaved.address || '-' }}</div>
+                <div style="grid-column: 1 / -1;"><strong>Chief Complaints:</strong> {{ lastSaved.complaints || '-' }}</div>
+                <div style="grid-column: 1 / -1;"><strong>History:</strong> {{ lastSaved.history || '-' }}</div>
+            </div>
+            <div style="margin-top: 0.75rem; color: var(--text-secondary); font-size: 0.9rem;">
+                Saved at: {{ lastSaved.savedAt | date:'medium' }}
+            </div>
+        </div>
+    </div>
+</div>

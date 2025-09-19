@@ -1,0 +1,21 @@
+<div class="auth-container">
+  <h2>Sign up</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>Email</label>
+    <input type="email" formControlName="email" placeholder="you@example.com" />
+    <div class="error" *ngIf="form.controls.email.touched && form.controls.email.invalid">Valid email required</div>
+
+    <label>Password</label>
+    <input type="password" formControlName="password" placeholder="••••••" />
+    <div class="error" *ngIf="form.controls.password.touched && form.controls.password.invalid">Min 6 characters</div>
+
+    <label>Confirm Password</label>
+    <input type="password" formControlName="confirmPassword" placeholder="••••••" />
+
+    <button type="submit" [disabled]="loading || form.invalid">{{ loading ? 'Creating...' : 'Sign up' }}</button>
+    <a routerLink="/login">Already have an account? Login</a>
+  </form>
+  <div class="error" *ngIf="error">{{ error }}</div>
+</div>
+
+
